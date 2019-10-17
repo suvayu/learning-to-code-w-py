@@ -40,7 +40,7 @@ def fasta_seqs(lines):
     """
     meta, sequence = None, ""
     for line in lines:
-        line = line.strip()
+        line = (line.decode() if isinstance(line, bytes) else line).strip()
         if line.startswith(">"):
             if meta:  # finished last seq
                 yield meta, sequence
