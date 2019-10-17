@@ -9,16 +9,18 @@ def read_file(path):
         yield from txtfile.readlines()
 
 
-def next_fasta_seq(lines):
+def fasta_seqs(lines):
     meta, sequence = None, ""
     for line in lines:
         line = line.strip()
         if line.startswith(">"):
-            meta = line
-            print(meta)
+            if meta:  # finished last seq
+                yield meta, sequence
+                # reset, we are processing the next seq
+                sequence = ""
+            meta = line[1:]
         elif meta is not None:
             sequence += line
-            print(line)
         else:
             continue
-    return meta, sequence
+    yield meta, sequence
