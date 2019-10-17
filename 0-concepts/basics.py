@@ -16,7 +16,9 @@
 # ---
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# # Getting familiar with the basics
+# ![Python logo](../data/python-logo-mini.png)
+#
+# # Hello Python!
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # ## Python: history and now
@@ -45,7 +47,7 @@
 #
 # - *sequences* or *containers* (contains other variables), and others (esp. in Python).
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Numbers
 
 # + {"slideshow": {"slide_type": "-"}}
@@ -81,12 +83,18 @@ a
 # exponent
 3 ** 3
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Booleans
 
 # + {"slideshow": {"slide_type": "-"}}
 eq = p == 10000
 eq, type(eq)
+
+# + {"slideshow": {"slide_type": "fragment"}}
+bool(1), bool(0), bool("")
+
+# + {"slideshow": {"slide_type": "fragment"}}
+bool(None), bool(set()), bool(dict())
 
 # + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
 # #### Boolean operations
@@ -94,7 +102,7 @@ eq, type(eq)
 
 -2 > 3 or -1 < 0, 2 > 3 and -1 > 3, not True
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Strings
 
 # + {"slideshow": {"slide_type": "-"}}
@@ -105,10 +113,7 @@ txt, type(txt)
 # escaping, and nested quotes
 "Don't be an ass", "Don't be an ass"
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
-# ### Strings
-
-# + {"slideshow": {"slide_type": "-"}}
+# + {"slideshow": {"slide_type": "subslide"}}
 multi = "First\nSecond"
 multi
 
@@ -131,10 +136,7 @@ a = "foo"
 b = "bar"
 a + b
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
-# #### String operations
-
-# + {"slideshow": {"slide_type": "-"}}
+# + {"slideshow": {"slide_type": "subslide"}}
 # multiply
 "--8<-" * 5
 
@@ -143,7 +145,7 @@ a + b
 "foo" in "foo bar baz"
 
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### User defined types
 
 # + {"slideshow": {"slide_type": "-"}}
@@ -159,7 +161,7 @@ instance = MyClass("foo")
 
 instance, type(instance)
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Containers
 
 # + {"slideshow": {"slide_type": "-"}}
@@ -169,8 +171,8 @@ l, type(l)
 # + {"slideshow": {"slide_type": "fragment"}}
 t1 = (x, y, eq)
 t1, type(t1)
-# -
 
+# + {"slideshow": {"slide_type": "subslide"}}
 # append
 l + [1, 2]
 
@@ -209,8 +211,8 @@ l
 # + {"slideshow": {"slide_type": "-"}}
 l[0] = p
 l
-# -
 
+# + {"slideshow": {"slide_type": "subslide"}}
 t1
 
 # + {"slideshow": {"slide_type": "fragment"}}
@@ -226,7 +228,7 @@ txt[5] = "e"
 # - iteration
 # - routines/functions
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Conditionals
 # -
 
@@ -239,9 +241,10 @@ else:  # optional
     pass
 
 # + {"slideshow": {"slide_type": "fragment"}}
+# ternary conditional
 True if "fool" not in txt else False
 
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Iteration
 # -
 
@@ -249,20 +252,205 @@ True if "fool" not in txt else False
 for i in l:
     print(i)
 
-# + {"slideshow": {"slide_type": "fragment"}}
+# + {"slideshow": {"slide_type": "subslide"}}
 # iterate by index
 for i in range(len(l)):
     print(l[i])
-# -
-
-# ### Iteration
 
 # + {"slideshow": {"slide_type": "subslide"}}
-# flexible
+# flexible iteration
 i = 0
 res = []
 while i < len(txt):
     res += [txt[-1 - i]]
     i += 1
 "".join(res)  # calling: str.join(iterable)
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ##### `break` and `continue` statements
+
+# + {"slideshow": {"slide_type": "-"}}
+# find b / show string upto the first b
+i = 0
+while i < len(txt):
+    if txt[i] == "b":
+        break  # prematurely ends any iteration
+    i += 1
+txt[:i]
+
+# + {"slideshow": {"slide_type": "subslide"}}
+# remove b-s
+i = 0
+res = ""
+while i < len(txt):
+    char = txt[i]
+    i += 1
+    if char == "b":
+        continue  # skip this iteration
+    res += char
+res
+
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Functions
+#
+# - Wraps a code block that can be reused, arguments act as parameters
+# - Ends in a `return` statement; returns the control back to the caller
+
+# +
+def add(i, j):
+    """Adds two numbers"""
+    return i + j
+
+
+def sub(i, j):
+    """Subtracts the second number from the first"""
+    return i - j
+
+
+def op(i, j, operator=add):
+    """Applies a binary operator to two numbers"""
+    return operator(i, j)
+
+
+# + {"slideshow": {"slide_type": "subslide"}}
+op(3, 4)
+
+# + {"slideshow": {"slide_type": "fragment"}}
+op(3, 4, sub)
+
+# + {"slideshow": {"slide_type": "fragment"}}
+op(3, 4, lambda i, j: i * j)
+
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# #### Positional and keyword arguments
 # -
+
+
+def myfunc(pos1, pos2, kw1="foo", kw2="bar"):
+    print(pos1, pos2, kw1, kw2)
+
+
+# + {"slideshow": {"slide_type": "fragment"}}
+myfunc(1, 2, 3, 4)
+# -
+
+myfunc(1, 2, kw2="random", kw1="order")
+
+myfunc(5, kw1="bla", pos2=99, kw2="dibla")
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# <center><strong>&#9646;&#9646;</strong></center>
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Problem
+#
+#
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# <center><strong>&#9654;</strong></center>
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# # More useful Python concepts
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Format strings
+# -
+
+fmt_float = "{0} {0:.3f} {0:+.3f} {0: .3f} {0:.3e} {0:.3g}"
+
+# + {"slideshow": {"slide_type": "fragment"}}
+fmt_float.format(79 / 3)
+# -
+
+fmt_float.format(-79 / 3)
+
+# + {"slideshow": {"slide_type": "subslide"}}
+fmt = "{} {} {}"
+# -
+
+fmt.format("foo", "bar", "baz")
+
+# + {"slideshow": {"slide_type": "fragment"}}
+fmt = "{a} {b} {c}"
+# -
+
+fmt.format(a="foo", c="bar", b="baz")
+
+# + {"slideshow": {"slide_type": "subslide"}}
+a = "foo"
+b = "bar"
+c = "baz"
+f"{a} {b} {c} {c.upper()}"
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Containers & Iteration
+# -
+
+# ### List comprehension
+
+[i for i in range(5)]
+
+# #### with conditionals
+
+[i for i in range(10) if i % 2]
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Sets
+# -
+
+set(f"{a} {b} {c}")  # unique elements
+
+# + {"slideshow": {"slide_type": "fragment"}}
+a_, b_, c_ = [set(i) for i in (a, b, c)]
+# -
+
+b_.intersection(c_), a_.isdisjoint(b_)
+
+b_.difference(c_), c_.difference(b_)
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Dictionaries
+# -
+
+week = {
+    "mon": 9,
+    "tues": 1,
+    "wed": 2,
+    "thurs": 3,
+    "fri": 4,
+    "sat": 5,
+    "sun": 6,
+}
+week
+
+week["mon"] = 0
+week
+
+# + {"slideshow": {"slide_type": "fragment"}}
+{k: (v, v < 5) for k, v in week.items()}
+# -
+
+# ## Function calls
+
+# ### Arbitrary arguments
+
+
+# ### Argument unpacking
+
+
+# ### Generators
+#
+# Use `yield` instead of `return`
+
+
+def myrange(start, end, step=1):
+    """A range implementation"""
+    res = start
+    while res < end:
+        yield res
+        res += step
+
+
+[i for i in myrange(0, 10, 3)]
