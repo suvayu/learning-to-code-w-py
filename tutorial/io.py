@@ -3,6 +3,19 @@ from pathlib import Path
 
 
 def read_file(path):
+    """Read a possibly bzipped text file line by line
+
+    Parameters
+    ----------
+    path: str, Path
+        File path
+
+    Returns
+    -------
+    Generator[str, None, None]
+        Read the file and return one line at a time
+
+    """
     path = Path(path)
     filehandler = BZ2File if path.suffix == ".bz2" else open
     with filehandler(path) as txtfile:
@@ -10,6 +23,21 @@ def read_file(path):
 
 
 def fasta_seqs(lines):
+    """Read one block of sequence at a time
+
+    Parameters
+    ----------
+    lines: iterable
+        Iterable that returns text in fasta format one line at a time.  This
+        can also be a generator or other iterators that read a fasta file or
+        stream lazily.
+
+    Returns
+    -------
+    Tuple[str, str]
+        Metadata, and sequence from the fasta file/stream, one at a time.
+
+    """
     meta, sequence = None, ""
     for line in lines:
         line = line.strip()
