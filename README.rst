@@ -1,5 +1,8 @@
 .. image:: data/python-logo-mini.png
 
+.. image:: https://mybinder.org/badge_logo.svg
+ :target: https://mybinder.org/v2/gh/suvayu/learning-to-code-w-py/master
+
 Learning to program, with Python
 ================================
 
