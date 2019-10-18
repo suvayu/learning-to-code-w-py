@@ -91,10 +91,12 @@ eq = p == 10000
 eq, type(eq)
 
 # + {"slideshow": {"slide_type": "fragment"}}
-bool(1), bool(0), bool("")
+# numbers and strings: 0, empty string, None -> False, everything else -> True
+bool(1), bool(0), bool(""), bool("foo"), bool(None)
 
 # + {"slideshow": {"slide_type": "fragment"}}
-bool(None), bool(set()), bool(dict())
+# containers: empty -> False, has element -> True
+bool(list()), bool([1]), bool(set()), bool({1}), bool(dict()), bool({1: 4})
 
 # + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
 # #### Boolean operations
@@ -268,9 +270,10 @@ while i < len(txt):
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # ##### `break` and `continue` statements
+#
+# What does the following do?
 
 # + {"slideshow": {"slide_type": "-"}}
-# find b / show string upto the first b
 i = 0
 while i < len(txt):
     if txt[i] == "b":
@@ -278,8 +281,10 @@ while i < len(txt):
     i += 1
 txt[:i]
 
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# **Ans:** *Finds b / Shows the string upto the first b*
+
 # + {"slideshow": {"slide_type": "subslide"}}
-# remove b-s
 i = 0
 res = ""
 while i < len(txt):
@@ -290,6 +295,9 @@ while i < len(txt):
     res += char
 res
 
+
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# **Ans:** *Remove all b-s from the string*
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Functions
@@ -344,14 +352,45 @@ myfunc(5, kw1="bla", pos2=99, kw2="dibla")
 # <center><strong>&#9646;&#9646;</strong></center>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ### Problem
+# ### Problem 1
 #
+# - Read a sequence, and count the number of bases of each type.
+# - Print out the counts as a table, or write it to a CSV file.
+
+# +
+from tutorial.io import read_file, fasta_seqs
+
+# `next` will work only twice, as the file has only two sequences
+fasta = read_file("data/example.fa")
+seq_itr = fasta_seqs(fasta)
+_, seq1 = next(seq_itr)  # work with seq1, it's a string
+# -
+
+seq1
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Problem 2
 #
+# - Read a sequence, and identify the sequence of *Codons*.
+# - Print out the position and codon as a table, or write it to a CSV file.
+
+# +
+from tutorial.seq import CODON_MAP
+
+_, seq2 = next(seq_itr)
+# CODON_MAP["START"], list of starting seq
+# CODON_MAP["STOP"], list of all stopping seqs
+# CODON_MAP["REST"], list of all other seqs
+# -
+
+CODON_MAP["STOP"]
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # <center><strong>&#9654;</strong></center>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ![Python logo](../data/python-logo-mini.png)
+#
 # # More useful Python concepts
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
@@ -386,13 +425,15 @@ f"{a} {b} {c} {c.upper()}"
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Containers & Iteration
-# -
-
+#
 # ### List comprehension
+# -
 
 [i for i in range(5)]
 
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
 # #### with conditionals
+# -
 
 [i for i in range(10) if i % 2]
 
@@ -430,9 +471,10 @@ week
 
 # + {"slideshow": {"slide_type": "fragment"}}
 {k: (v, v < 5) for k, v in week.items()}
-# -
 
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Function calls
+# -
 
 # ### Arbitrary arguments
 
