@@ -13,6 +13,7 @@
 #     name: python3
 #   rise:
 #     enable_chalkboard: true
+#     autolaunch: true
 # ---
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
