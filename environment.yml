@@ -1,0 +1,10 @@
+name: tutorial
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas
+  - pyarrow
+  - pytables
+  - matplotlib
+  - rise
