@@ -17,9 +17,7 @@
 # ---
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ![Python logo](data/python-logo-mini.png)
-#
-# # Hello Python!
+# # ![Python logo](data/python.ico) Hello Python!
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # ## Python: history and now
@@ -56,14 +54,15 @@ x, y = 3, 3.0
 x, type(x), y, type(y)
 
 # + {"slideshow": {"slide_type": "fragment"}}
-p, q = 10_000, 1e4
+# alternate notations for readability
+p, q = 10_000, 1.1e4
 p, type(p), q, type(q)
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # #### Numeric operations
 
 # + {"slideshow": {"slide_type": "-"}}
-# increment, similar for most other operators
+# increment, similar for most other operators: -=, *=, /=
 a = 40
 a = a + 1
 a += 1
@@ -99,11 +98,15 @@ bool(1), bool(0), bool(""), bool("foo"), bool(None)
 # containers: empty -> False, has element -> True
 bool(list()), bool([1]), bool(set()), bool({1}), bool(dict()), bool({1: 4})
 
-# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # #### Boolean operations
 # -
 
--2 > 3 or -1 < 0, 2 > 3 and -1 > 3, not True
+-2 > 3 or -1 < 0
+
+2 > 3 and -1 > 3
+
+not True
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Strings
@@ -114,7 +117,7 @@ txt, type(txt)
 
 # + {"slideshow": {"slide_type": "fragment"}}
 # escaping, and nested quotes
-"Don't be an ass", "Don't be an ass"
+'Don\'t be an ass', "Don't be an ass"
 
 # + {"slideshow": {"slide_type": "subslide"}}
 multi = "First\nSecond"
@@ -131,7 +134,8 @@ print(multi)
 "foo" "bar"
 
 # + {"slideshow": {"slide_type": "fragment"}}
-"foo" "bar"
+"foo"\
+"bar"
 
 # + {"slideshow": {"slide_type": "fragment"}}
 # append
@@ -168,12 +172,10 @@ instance, type(instance)
 # ### Containers
 
 # + {"slideshow": {"slide_type": "-"}}
-l = [x, y, p, q, txt, eq]
-l, type(l)
+l = [1, 2.0, 3, 4.0, "foo", True]
+t1 = (1, 3.14, True)
 
-# + {"slideshow": {"slide_type": "fragment"}}
-t1 = (x, y, eq)
-t1, type(t1)
+type(l), type(t1)
 
 # + {"slideshow": {"slide_type": "subslide"}}
 # append
@@ -184,24 +186,30 @@ l + [1, 2]
 t1 * 3
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
-# ### Indexing and slicing
+# ### Indexing
 #
 # Syntax: `container[index]`
 
 # + {"slideshow": {"slide_type": "-"}}
-l[0] == t1[0] == 3
+l[0] == t1[0] == 1
 
 # + {"slideshow": {"slide_type": "fragment"}}
 l[-1] == True
 
-# + {"slideshow": {"slide_type": "subslide"}}
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Slicing
+#
+# Syntax: `container[start:stop:step]` (only one is required)
+# -
+
 l, l[:2], l[1:3]
 
 # + {"slideshow": {"slide_type": "fragment"}}
 l[0:4:2], l[::3]
 
 # + {"slideshow": {"slide_type": "fragment"}}
-txt, txt[4:7]
+txt = "foo bar baz"
+txt[4:7]
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Mutable and immutable types
@@ -209,14 +217,14 @@ txt, txt[4:7]
 # Certain types, once created cannot be "edited"; e.g. `str`, `tuple`.
 
 # + {"slideshow": {"slide_type": "fragment"}}
-l
+l  # mutable
 
 # + {"slideshow": {"slide_type": "-"}}
-l[0] = p
+l[0] = 1000
 l
 
 # + {"slideshow": {"slide_type": "subslide"}}
-t1
+t1, txt  # immutable
 
 # + {"slideshow": {"slide_type": "fragment"}}
 t1[0] = p
@@ -249,30 +257,40 @@ True if "fool" not in txt else False
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Iteration
+#
+# #### `for` loops
 # -
 
 # iterate over items
-for i in l:
+for i in t1:
     print(i)
 
 # + {"slideshow": {"slide_type": "subslide"}}
 # iterate by index
-for i in range(len(l)):
-    print(l[i])
+for i in range(len(t1)):
+    print(t1[i])
 
-# + {"slideshow": {"slide_type": "subslide"}}
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# #### `while` loops
+#
+# *What does the following do?*
+# -
+
 # flexible iteration
 i = 0
 res = []
 while i < len(txt):
     res += [txt[-1 - i]]
     i += 1
-"".join(res)  # calling: str.join(iterable)
+"".join(res)  # calling: str.join(Iterable[str]) -> str
+
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# **Ans:** *Reverse the string `txt`*
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
-# ##### `break` and `continue` statements
+# #### `break` and `continue` statements
 #
-# What does the following do?
+# *What does the following do?*
 
 # + {"slideshow": {"slide_type": "-"}}
 i = 0
@@ -283,9 +301,12 @@ while i < len(txt):
 txt[:i]
 
 # + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
-# **Ans:** *Finds b / Shows the string upto the first b*
+# **Ans:** *Finds the first b / Shows the string upto the first b*
 
-# + {"slideshow": {"slide_type": "subslide"}}
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# *What does the following do?*
+# -
+
 i = 0
 res = ""
 while i < len(txt):
@@ -304,31 +325,30 @@ res
 # ### Functions
 #
 # - Wraps a code block that can be reused, arguments act as parameters
-# - Ends in a `return` statement; returns the control back to the caller
+# - Ends in a `return` statement; returns control back to the caller
 
 # +
 def add(i, j):
-    """Adds two numbers"""
     return i + j
 
 
 def sub(i, j):
-    """Subtracts the second number from the first"""
     return i - j
 
 
-def op(i, j, operator=add):
-    """Applies a binary operator to two numbers"""
+def op(i, j, operator=add):  # default operator: addition
+    """Applies a binary operator to two numbers"""  # <- docstring
     return operator(i, j)
 
 
 # + {"slideshow": {"slide_type": "subslide"}}
-op(3, 4)
+op(3, 4)  # addition
 
 # + {"slideshow": {"slide_type": "fragment"}}
-op(3, 4, sub)
+op(3, 4, sub)  # subtraction
 
 # + {"slideshow": {"slide_type": "fragment"}}
+# multiply w/ anonymous function
 op(3, 4, lambda i, j: i * j)
 
 
@@ -349,8 +369,71 @@ myfunc(1, 2, kw2="random", kw1="order")
 
 myfunc(5, kw1="bla", pos2=99, kw2="dibla")
 
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Variable scope
+
+# +
+num = 42
+
+for i in range(3):
+    if i == 0:
+        assert num == 42
+        num = 5
+    assert num == 5
+
+assert num == 5
+# -
+
+
+
+# + {"slideshow": {"slide_type": "subslide"}}
+num = 42
+
+def testfn1():
+    assert num == 42
+
+testfn1()
+assert num == 42
+# -
+
+
+
+# + {"slideshow": {"slide_type": "subslide"}}
+num = 42
+
+def testfn2():
+    assert num == 5
+
+num = 5
+testfn2()
+# -
+
+
+
+# + {"slideshow": {"slide_type": "subslide"}}
+num = 5
+
+def testfn3():
+    num = 11
+    assert num == 11
+
+testfn3()
+assert num == 5  # True
+assert num == 11  # False
+
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # <center><strong>&#9646;&#9646;</strong></center>
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### How to help yourself
+#
+# - Use `help(object|"syntax token")`
+# - docstrings
+# - function signatures
+# - Library reference, tutorials, HOWTOs, etc @ [Python.org](https://docs.python.org/3.7/)
+# -
+
+
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Problem 1
@@ -367,7 +450,7 @@ seq_itr = fasta_seqs(fasta)
 _, seq1 = next(seq_itr)  # work with seq1, it's a string
 # -
 
-seq1
+seq1[:12]
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Problem 2
@@ -390,9 +473,7 @@ CODON_MAP["STOP"]
 # <center><strong>&#9654;</strong></center>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ![Python logo](data/python-logo-mini.png)
-#
-# # More useful Python concepts
+# # ![Python logo](data/python.ico) More useful Python concepts
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Format strings
@@ -419,9 +500,7 @@ fmt = "{a} {b} {c}"
 fmt.format(a="foo", c="bar", b="baz")
 
 # + {"slideshow": {"slide_type": "subslide"}}
-a = "foo"
-b = "bar"
-c = "baz"
+a, b, c = "foo bar baz".split()  # calling: str.split() -> List[str]
 f"{a} {b} {c} {c.upper()}"
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
@@ -442,10 +521,10 @@ f"{a} {b} {c} {c.upper()}"
 # ### Sets
 # -
 
-set(f"{a} {b} {c}")  # unique elements
+set("foo bar baz")  # unique elements
 
 # + {"slideshow": {"slide_type": "fragment"}}
-a_, b_, c_ = [set(i) for i in (a, b, c)]
+a_, b_, c_ = set("foo"), set("bar"), set("baz")
 # -
 
 b_.intersection(c_), a_.isdisjoint(b_)
@@ -470,30 +549,194 @@ week
 week["mon"] = 0
 week
 
-# + {"slideshow": {"slide_type": "fragment"}}
-{k: (v, v < 5) for k, v in week.items()}
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# #### Dictionary comprehension
+
+# + {"slideshow": {"slide_type": "-"}}
+{k: (v, v < 5) for k, v in week.items()}  # add weekday boolean flag
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### builtins: `zip`, `enumerate`
+#
+# - `zip` "ties" two iterables
+# - `enumerate` with index
+
+# + {"slideshow": {"slide_type": "subslide"}}
+vowels = ("a", "e", "i", "o", "u")
+for vowel, num in zip(vowels, range(len(vowels))):
+    print(vowel, num)
+
+# + {"slideshow": {"slide_type": "subslide"}}
+for index, vowel in enumerate(vowels):
+    print(index, vowel)
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Function calls
+#
+# ### Argument unpacking
 # -
 
+
+def myfunc(pos1, pos2, kw1="foo", kw2="bar"):
+    print(pos1, pos2, kw1, kw2)
+
+
+x, y, z = (1, 2, 3)
+x, y, z
+
+# + {"slideshow": {"slide_type": "subslide"}}
+t2 = (1, 2, "foo", "bar")
+myfunc(*t2)  # also works for lists
+
+# + {"slideshow": {"slide_type": "fragment"}}
+d1 = {"kw1": "foo", "kw2": "bar"}
+myfunc(*t1[:2], **d1)
+
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # ### Arbitrary arguments
+# -
+
+def myflexiblefn(pos1, *args, kw1="foo", **kwargs):
+    print(pos1, kw1, args, kwargs)
 
 
-# ### Argument unpacking
+myflexiblefn(1, 2, 3, kw1="foo", kw2="bar", kw3="baz")
+
+# argument order: positional, *args, keyword, **kwargs
+myflexiblefn(**d1, *t1[:2])
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# **Note:** while giving default arguments, avoid using empty containers
 
 
+# +
+def fn1(a, b=42):  # a-okay!
+    pass
+
+def fn1(a, b=[]):  # not okay!
+    pass
+
+def fn1(a, b=None):
+    # use this idiom instead
+    if b is None:
+        b = []
+    pass
+
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Merging tuples and dictionaries
+# -
+
+(42, *t1, *t2)
+
+# + {"slideshow": {"slide_type": "fragment"}}
+d0 = {"a": 1, "b": 2}
+d1 = {"c": 3, "d": 4}
+{**d0, **d1}
+# -
+
+# later keys have precedence
+{**d0, **d1, "a": 0}
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Generators
 #
-# Use `yield` instead of `return`
+# - functions with lazy evaluation
+# - `yield` -> `return`
 
 
+# + {"slideshow": {"slide_type": "fragment"}}
 def myrange(start, end, step=1):
-    """A range implementation"""
+    """My range implementation"""
     res = start
     while res < end:
         yield res
         res += step
 
 
+# -
+
 [i for i in myrange(0, 10, 3)]
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Using `lambda` functions with `map`, `all`, `any`
+# -
+
+pairs = ["1,2", "3,4", "5,6"]
+list(map(lambda i: i.split(","), pairs))
+
+# + {"slideshow": {"slide_type": "subslide"}}
+from random import choices
+from string import ascii_lowercase
+
+vowels = ("a", "e", "i", "o", "u")
+population = choices(ascii_lowercase, k=10)
+is_vowel = [c in vowels for c in population]
+population, is_vowel
+# -
+
+any(is_vowel)
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### I/O
+#
+# - text file formats (read using parsers):
+#   - delimited files: `CSV`, `TSV`
+#   - files with nested data: `JSON`, `XML`, `YAML`
+#   - genomics: `FASTA` (DNA sequence), `VCF` (variant calls)
+# - binary formats (dedicated libraries):
+#   - advanced compression support (smaller files)
+#   - faster (optimised for a common task)
+#   - formats: `HDF5` (hierarchichal), `Parquet` (columnar), `Avro` (row)
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# 1. open file: read, write, text, binary
+# 2. do operations: read, write, seek
+# 3. close file (otherwise may get corrupted)
+# 4. Standard library: `csv`, `json`, `xml`, `yaml`, `zip`, `bz2`
+
+# + {"slideshow": {"slide_type": "subslide"}}
+# use context managers
+with open("/tmp/afile.txt", mode="w") as txt:
+    txt.write("foo")
+    txt.write("bar")
+    txt.write("baz\n")
+    txt.write(str(1) + "\n")
+# -
+
+# ! cat /tmp/afile.txt
+
+# + {"slideshow": {"slide_type": "subslide"}}
+# read_file??  # from tutorial.io
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# <center><strong>&#9646;&#9646;</strong></center>
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Problem 1, attempt 2
+#
+# - Read a sequence, and count the number of bases of each type.
+# - Print out the counts as a table, or write it to a CSV file.
+# -
+
+
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Problem 2, attempt 2
+#
+# - Read a sequence, and identify the sequence of *Codons*.
+# - Print out the position and codon as a table, or write it to a CSV file.
+# -
+
+
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Problem 3
+#
+# - read `data/summary.txt` as a "table", and summarise the data
+# - *Note:* you might need to do some cleaning, to interpret the table as numbers
+# -
+
+
+
