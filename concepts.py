@@ -16,7 +16,7 @@
 # ---
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ![Python logo](../data/python-logo-mini.png)
+# ![Python logo](data/python-logo-mini.png)
 #
 # # Hello Python!
 
@@ -389,7 +389,7 @@ CODON_MAP["STOP"]
 # <center><strong>&#9654;</strong></center>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ![Python logo](../data/python-logo-mini.png)
+# ![Python logo](data/python-logo-mini.png)
 #
 # # More useful Python concepts
 
