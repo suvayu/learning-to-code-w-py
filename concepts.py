@@ -47,6 +47,23 @@
 # - *sequences* or *containers* (contains other variables), and others (esp. in Python).
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Literals
+# -
+
+# values
+1, 3.14, 0b10, 0x1e, "string", b"bytes"
+
+# + {"slideshow": {"slide_type": "fragment"}}
+a = 2.14  # variable assignment: hold a reference to a value
+a + 1  # the variable refers to the value later
+
+# + {"slideshow": {"slide_type": "fragment"}}
+a # what is a?
+
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# To refer to an `object` later, you must store a reference to it in a variable
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Numbers
 
 # + {"slideshow": {"slide_type": "-"}}
@@ -80,14 +97,14 @@ a
 1 // 2, 4 // 3, 4 // 2
 
 # + {"slideshow": {"slide_type": "fragment"}}
-# exponent
-3 ** 3
+# modulo/remainder, exponent
+4 % 3, 3 ** 3
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Booleans
 
 # + {"slideshow": {"slide_type": "-"}}
-eq = p == 10000
+eq = p == 10_000
 eq, type(eq)
 
 # + {"slideshow": {"slide_type": "fragment"}}
@@ -98,21 +115,44 @@ bool(1), bool(0), bool(""), bool("foo"), bool(None)
 # containers: empty -> False, has element -> True
 bool(list()), bool([1]), bool(set()), bool({1}), bool(dict()), bool({1: 4})
 
+# + {"slideshow": {"slide_type": "subslide"}}
+bool(None), bool([]), bool([1])
+# -
+
+bool([None])  # given the above, what does this evaluate to?
+
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # #### Boolean operations
 # -
 
--2 > 3 or -1 < 0
+-2 > 3 or -1 < 0, 2 > 3 and -1 > 3, not True
 
-2 > 3 and -1 > 3
-
-not True
+# + {"slideshow": {"slide_type": "notes"}, "cell_type": "markdown"}
+# ##### Truth table
+#
+# <table>
+# <tr><th>Logical OR</th><th>Logical AND</th></tr>
+# <tr><td>
+#
+# | `or` | T | F |
+# |:----:|---|---|
+# | T    | T | T |
+# | F    | T | F |
+#
+# </td><td>
+#
+# | `and` | T | F |
+# |:-----:|---|---|
+# | T     | T | F |
+# | F     | F | F |
+#
+# </td></tr> </table>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Strings
 
 # + {"slideshow": {"slide_type": "-"}}
-txt = "foo bar baz"
+txt = "foo bar baz"  # 'also valid'
 txt, type(txt)
 
 # + {"slideshow": {"slide_type": "fragment"}}
@@ -125,6 +165,21 @@ multi
 
 # + {"slideshow": {"slide_type": "fragment"}}
 print(multi)
+# -
+
+# #### Triple quoted strings
+
+prose = """This is a pre-formatted string.
+
+You may have paragraphs, and lists:
+- an item
+- no need for "escaping"
+
+    Or whatever you like
+
+"""
+print(prose)
+prose
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # #### String operations
@@ -149,7 +204,7 @@ a + b
 
 # + {"slideshow": {"slide_type": "fragment"}}
 # in
-"foo" in "foo bar baz"
+"foo" in "foo bar baz", "foo" not in "foo bar baz"
 
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
@@ -227,23 +282,39 @@ l
 t1, txt  # immutable
 
 # + {"slideshow": {"slide_type": "fragment"}}
-t1[0] = p
+t1[0] = 1000
 
 # + {"slideshow": {"slide_type": "fragment"}}
 txt[5] = "e"
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Operators & type conversion
+#
+# - Implicit type conversion on supported operations
+# - Result is the most representative type: support both operands **and** the result
+# -
+
+1 +  3.14, type(1 + 3.14), 1 + True, type(1 + True), 2.16 * False
+
+# + {"slideshow": {"slide_type": "subslide"}}
+"1" + 1
+# -
+
+1 + "1"  # same for: "foo" - "foo"
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Flow control
 #
 # - conditionals
 # - iteration
-# - routines/functions
+# - callable / functions: reusable routines
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Conditionals
 # -
 
 # if .. else ..
+txt = "foo bar baz"
 if "foo" in txt:
     pass
 elif "bar" in txt:  # optional
@@ -253,7 +324,8 @@ else:  # optional
 
 # + {"slideshow": {"slide_type": "fragment"}}
 # ternary conditional
-True if "fool" not in txt else False
+par = None
+5 if par is None else par
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Iteration
@@ -262,13 +334,19 @@ True if "fool" not in txt else False
 # -
 
 # iterate over items
+t1 = (1, 3.14, True)
 for i in t1:
     print(i)
 
 # + {"slideshow": {"slide_type": "subslide"}}
 # iterate by index
-for i in range(len(t1)):
+for i in range(len(t1)):  # len(..) returns the length of a sequence
     print(t1[i])
+
+# + {"slideshow": {"slide_type": "fragment"}}
+# iterate by index
+for i in range(1, 10, 2):
+    print(i)
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # #### `while` loops
@@ -277,6 +355,7 @@ for i in range(len(t1)):
 # -
 
 # flexible iteration
+txt = "foo bar baz"
 i = 0
 res = []
 while i < len(txt):
@@ -293,6 +372,7 @@ while i < len(txt):
 # *What does the following do?*
 
 # + {"slideshow": {"slide_type": "-"}}
+txt = "foo bar baz"
 i = 0
 while i < len(txt):
     if txt[i] == "b":
@@ -307,6 +387,7 @@ txt[:i]
 # *What does the following do?*
 # -
 
+txt = "foo bar baz"
 i = 0
 res = ""
 while i < len(txt):
@@ -322,7 +403,7 @@ res
 # **Ans:** *Remove all b-s from the string*
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ### Functions
+# ### Callables / Functions
 #
 # - Wraps a code block that can be reused, arguments act as parameters
 # - Ends in a `return` statement; returns control back to the caller
@@ -332,6 +413,16 @@ def add(i, j):
     return i + j
 
 
+def sub(i, j):
+    return i - j
+
+
+def op(i, j, operator=add):  # default operator: addition
+    """Applies a binary operator to two numbers"""  # <- docstring
+    return operator(i, j)
+
+
+# +
 def sub(i, j):
     return i - j
 
@@ -351,6 +442,12 @@ op(3, 4, sub)  # subtraction
 # multiply w/ anonymous function
 op(3, 4, lambda i, j: i * j)
 
+
+# + {"slideshow": {"slide_type": "notes"}, "cell_type": "markdown"}
+# #### Anonymous / `lambda` functions
+#
+# - no statements
+# - only expressions
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # #### Positional and keyword arguments
