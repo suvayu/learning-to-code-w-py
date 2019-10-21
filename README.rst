@@ -31,7 +31,7 @@ I have also included a few small datasets under ``data``.  They are:
 
 ``example.fa`` : a fasta file from `this Kaggle kernel <https://www.kaggle.com/thomasnelson/working-with-dna-sequence-data-for-ml/data>`__,
 
-``human_ancestor_Y.fa.bz2`` : a compressed fasta file for the Y chromosome from the `1000 Genome Project (1KGP) <ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/pilot_data/technical/reference/ancestral_alignments/>`__,
+``human_ancestor_Y.fa.bz2`` : a compressed fasta file for the Y chromosome from the `1000 Genome Project <http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/pilot_data/technical/reference/ancestral_alignments/>`__ (1KGP),
 
 ``summary.txt`` : a TSV file summarising the above dataset from the 1KGP.
 
