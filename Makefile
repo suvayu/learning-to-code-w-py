@@ -4,4 +4,3 @@
 
 %.py:	%.ipynb
 	jupytext -o $@ --to "py:light" $<
-	black -l 79 $@
