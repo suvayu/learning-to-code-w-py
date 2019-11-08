@@ -165,9 +165,10 @@ multi
 
 # + {"slideshow": {"slide_type": "fragment"}}
 print(multi)
-# -
 
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # #### Triple quoted strings
+# -
 
 prose = """This is a pre-formatted string.
 
@@ -412,20 +413,8 @@ res
 def add(i, j):
     return i + j
 
-
 def sub(i, j):
     return i - j
-
-
-def op(i, j, operator=add):  # default operator: addition
-    """Applies a binary operator to two numbers"""  # <- docstring
-    return operator(i, j)
-
-
-# +
-def sub(i, j):
-    return i - j
-
 
 def op(i, j, operator=add):  # default operator: addition
     """Applies a binary operator to two numbers"""  # <- docstring
@@ -443,6 +432,18 @@ op(3, 4, sub)  # subtraction
 op(3, 4, lambda i, j: i * j)
 
 
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# In the absence of a `return` statement, `return None`
+# -
+
+def myfunc():
+    pass
+
+
+# + {"slideshow": {"slide_type": "fragment"}}
+res = myfunc()
+print(res)
+
 # + {"slideshow": {"slide_type": "notes"}, "cell_type": "markdown"}
 # #### Anonymous / `lambda` functions
 #
@@ -459,6 +460,7 @@ def myfunc(pos1, pos2, kw1="foo", kw2="bar"):
 
 
 # + {"slideshow": {"slide_type": "fragment"}}
+# what's the print order?
 myfunc(1, 2, 3, 4)
 # -
 
@@ -466,8 +468,21 @@ myfunc(1, 2, kw2="random", kw1="order")
 
 myfunc(5, kw1="bla", pos2=99, kw2="dibla")
 
+# + {"slideshow": {"slide_type": "subslide"}}
+# explain the errors
+myfunc()
+# -
+
+myfunc(42)
+
+myfunc(kw1=42)
+
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Variable scope
+# -
+
+# Code blocks, at any indentation level, are in the *same scope*
+
 
 # +
 num = 42
@@ -479,44 +494,48 @@ for i in range(3):
     assert num == 5
 
 assert num == 5
-# -
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# Functions have access to variables in the current scope *during execution*
 
 
-
-# + {"slideshow": {"slide_type": "subslide"}}
+# +
 num = 42
 
 def testfn1():
-    assert num == 42
-
+    assert num == 42, f"{num} is not 42"
+# + {"slideshow": {"slide_type": "fragment"}}
 testfn1()
-assert num == 42
+# + {"slideshow": {"slide_type": "fragment"}}
+num = 5
+testfn1()
+# + {"slideshow": {"slide_type": "subslide"}}
+del num
 # -
 
+testfn1()
 
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# When 2 variables have the same name, the variable in the inner most scope is said to *shadow* the outer variable
 
-# + {"slideshow": {"slide_type": "subslide"}}
+# +
 num = 42
 
 def testfn2():
-    assert num == 5
+    num = 5
+    assert num == 5, f"{num} is not 5"
 
-num = 5
-testfn2()
+
 # -
 
 
+testfn2()
+
 
 # + {"slideshow": {"slide_type": "subslide"}}
-num = 5
+assert num == 5, f"{num} is not 5"
 
-def testfn3():
-    num = 11
-    assert num == 11
-
-testfn3()
-assert num == 5  # True
-assert num == 11  # False
+# + {"slideshow": {"slide_type": "notes"}, "cell_type": "markdown"}
+# *Review errors at this point*
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # <center><strong>&#9646;&#9646;</strong></center>
@@ -570,7 +589,7 @@ CODON_MAP["STOP"]
 # <center><strong>&#9654;</strong></center>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# # ![Python logo](data/python.ico) More useful Python concepts
+# # ![Python logo](data/python.ico) More Python concepts
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Format strings
@@ -601,6 +620,62 @@ a, b, c = "foo bar baz".split()  # calling: str.split() -> List[str]
 f"{a} {b} {c} {c.upper()}"
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Function calls
+#
+# ### Argument unpacking
+# -
+
+
+def myfunc(pos1, pos2, kw1="foo", kw2="bar"):
+    print(pos1, pos2, kw1, kw2)
+
+
+x, y, z = (1, 2, 3)
+x, y, z
+
+# + {"slideshow": {"slide_type": "subslide"}}
+t1 = (1, 2, "foo", "bar")
+myfunc(*t1)  # also works for lists
+
+# + {"slideshow": {"slide_type": "fragment"}}
+d1 = {"kw1": "foo", "kw2": "bar"}
+myfunc(*t1[:2], **d1)
+
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Arbitrary arguments
+#
+# - positional arguments, followed by keyword arguments
+# -
+
+def myflexiblefn(pos1, *args, kw1="foo", **kwargs):
+    print(pos1, kw1, args, kwargs)
+
+
+myflexiblefn(1, 2, 3, kw1="foo", kw2="bar", kw3="baz")
+
+# argument order: positional, *args, keyword, **kwargs
+myflexiblefn(**d1, *t1[:2])
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# **Note:** default arguments should never be mutable objects, e.g. empty containers
+
+
+# +
+def fn1(a, b=42):  # a-okay!
+    pass
+
+def fn1(a, b=[]):  # not okay!
+    pass
+
+def fn1(a, b=None):
+    # use this idiom instead
+    if b is None:
+        b = []
+    pass
+
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Containers & Iteration
 #
 # ### List comprehension
@@ -616,13 +691,23 @@ f"{a} {b} {c} {c.upper()}"
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # ### Sets
+#
+# - elements are unique
 # -
 
-set("foo bar baz")  # unique elements
+set("foo bar baz")
 
-# + {"slideshow": {"slide_type": "fragment"}}
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# #### Set comprehension
+# -
+
+{c for c in "foo bar baz"}
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# #### Operations with `set`s
+# -
+
 a_, b_, c_ = set("foo"), set("bar"), set("baz")
-# -
 
 b_.intersection(c_), a_.isdisjoint(b_)
 
@@ -653,79 +738,12 @@ week
 {k: (v, v < 5) for k, v in week.items()}  # add weekday boolean flag
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
-# ### builtins: `zip`, `enumerate`
-#
-# - `zip` "ties" two iterables
-# - `enumerate` with index
-
-# + {"slideshow": {"slide_type": "subslide"}}
-vowels = ("a", "e", "i", "o", "u")
-for vowel, num in zip(vowels, range(len(vowels))):
-    print(vowel, num)
-
-# + {"slideshow": {"slide_type": "subslide"}}
-for index, vowel in enumerate(vowels):
-    print(index, vowel)
-
-# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ## Function calls
-#
-# ### Argument unpacking
+# ### Merging tuples, lists, and dictionaries
 # -
 
-
-def myfunc(pos1, pos2, kw1="foo", kw2="bar"):
-    print(pos1, pos2, kw1, kw2)
-
-
-x, y, z = (1, 2, 3)
-x, y, z
-
-# + {"slideshow": {"slide_type": "subslide"}}
-t2 = (1, 2, "foo", "bar")
-myfunc(*t2)  # also works for lists
-
-# + {"slideshow": {"slide_type": "fragment"}}
-d1 = {"kw1": "foo", "kw2": "bar"}
-myfunc(*t1[:2], **d1)
-
-
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
-# ### Arbitrary arguments
-# -
-
-def myflexiblefn(pos1, *args, kw1="foo", **kwargs):
-    print(pos1, kw1, args, kwargs)
-
-
-myflexiblefn(1, 2, 3, kw1="foo", kw2="bar", kw3="baz")
-
-# argument order: positional, *args, keyword, **kwargs
-myflexiblefn(**d1, *t1[:2])
-
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
-# **Note:** while giving default arguments, avoid using empty containers
-
-
-# +
-def fn1(a, b=42):  # a-okay!
-    pass
-
-def fn1(a, b=[]):  # not okay!
-    pass
-
-def fn1(a, b=None):
-    # use this idiom instead
-    if b is None:
-        b = []
-    pass
-
-
-# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
-# ### Merging tuples and dictionaries
-# -
-
-(42, *t1, *t2)
+t1 = (1, 2)
+t2 = ("foo", "bar", "baz")
+(42, *t1, *t2)  # same for lists
 
 # + {"slideshow": {"slide_type": "fragment"}}
 d0 = {"a": 1, "b": 2}
@@ -737,46 +755,7 @@ d1 = {"c": 3, "d": 4}
 {**d0, **d1, "a": 0}
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ### Generators
-#
-# - functions with lazy evaluation
-# - `yield` -> `return`
-
-
-# + {"slideshow": {"slide_type": "fragment"}}
-def myrange(start, end, step=1):
-    """My range implementation"""
-    res = start
-    while res < end:
-        yield res
-        res += step
-
-
-# -
-
-[i for i in myrange(0, 10, 3)]
-
-# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ### Using `lambda` functions with `map`, `all`, `any`
-# -
-
-pairs = ["1,2", "3,4", "5,6"]
-list(map(lambda i: i.split(","), pairs))
-
-# + {"slideshow": {"slide_type": "subslide"}}
-from random import choices
-from string import ascii_lowercase
-
-vowels = ("a", "e", "i", "o", "u")
-population = choices(ascii_lowercase, k=10)
-is_vowel = [c in vowels for c in population]
-population, is_vowel
-# -
-
-any(is_vowel)
-
-# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# ### I/O
+# ## I/O
 #
 # - text file formats (read using parsers):
 #   - delimited files: `CSV`, `TSV`
@@ -794,18 +773,46 @@ any(is_vowel)
 # 4. Standard library: `csv`, `json`, `xml`, `yaml`, `zip`, `bz2`
 
 # + {"slideshow": {"slide_type": "subslide"}}
-# use context managers
-with open("/tmp/afile.txt", mode="w") as txt:
-    txt.write("foo")
-    txt.write("bar")
-    txt.write("baz\n")
-    txt.write(str(1) + "\n")
+txt = open("/tmp/afile.txt", mode="w")
+txt.write("foo")
+txt.write("bar")
+txt.write("baz\n")
+txt.write(str(1) + "\n")
+txt.close()
 # -
 
 # ! cat /tmp/afile.txt
 
 # + {"slideshow": {"slide_type": "subslide"}}
-# read_file??  # from tutorial.io
+txt = open("/tmp/afile.txt", mode="r")  # open
+for line in txt.readlines():  # work with it
+    print(line)
+
+# + {"slideshow": {"slide_type": "fragment"}}
+txt.close()  # close
+
+# + {"slideshow": {"slide_type": "fragment"}}
+# why the extra lines?
+
+# + {"slideshow": {"slide_type": "subslide"}}
+# use context managers
+with open("/tmp/afile.txt", mode="w") as txt:
+    txt.write("foo")
+    txt.write("bar")
+    txt.write("baz\n")
+    txt.write(str(42) + "\n")
+# -
+
+# ! cat /tmp/afile.txt
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Advanced example from tutorial helpers
+# -
+
+from tutorial.io import read_file
+
+# + {"slideshow": {"slide_type": "subslide"}}
+read_file??
 
 # + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
 # <center><strong>&#9646;&#9646;</strong></center>
@@ -833,7 +840,278 @@ with open("/tmp/afile.txt", mode="w") as txt:
 #
 # - read `data/summary.txt` as a "table", and summarise the data
 # - *Note:* you might need to do some cleaning, to interpret the table as numbers
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# <center><strong>&#9654;</strong></center>
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# # ![Python logo](data/python.ico) Advanced Python concepts
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Writing scripts
+#
+#
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### *shebang* line:
+#
+#     #!/usr/bin/python
+#     # script continues ...
+#
+# or more portable:
+#
+#     #!/usr/bin/env python
+#     # script continues ...
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### `import` statements
+#
+# **Syntax:** `import module` or `from module import name [, name]`
+# -
+import sys  # module name
+from pathlib import Path  # function or class name
+from functools import chain, accumulate  # multiple names
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Argument parsing
+# -
+sys.argv  # all command line arguments (including script name)
+
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Problem 1, attempt 3
+#
+# - Read a sequence, and count the number of bases of each type.
+# - Print out the counts as a table, or write it to a CSV file.
+# - Write the solution as a script that takes a fasta sequence file as argument
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# *Tips:* use libraries like,
+# - `argparse` (in the standard library, no installation needed),
+# - `click` (external library, more concise *decorator* based API).
+#
+# *Solutions:* see [simple](prob-1-soln-1.py), [more complete](prob-1-soln-2.py).
 # -
 
+
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Decorators
+#
+# - Allows you to modify behaviour by "wrapping" an existing function
+# - They are functions themselves
+# + {}
+def make_bold(fn):
+    def wrapper(*args, **kwargs):
+        return "<b>" + fn(*args, **kwargs) + "</b>"
+    return wrapper
+
+@make_bold
+def hello1():
+    return "Hello World!"
+
+
+# -
+
+
+hello1()
+
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# *How does it work?*
+
+# +
+@make_bold
+def hello1(name="World"):
+    return f"Hello {name}!"
+
+def hello2(name="World"):
+    return f"Hello {name}!"
+hello2 = make_bold(hello2)  # equivalent
+# -
+
+hello2("Foo"), hello3("Bar")
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# Reimplement retaining the function name
+
+# +
+from functools import wraps
+
+def makebold(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        return "<b>" + fn(*args, **kwargs) + "</b>"
+    return wrapper
+
+@makebold
+def hello2(name="World"):
+    return f"Hello {name}!"
+
+
+# -
+
+hello1.__name__, hello2.__name__
+
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# #### Decorators with parameters
+
+# +
+def format_tag(tag):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            return f"<{tag}>{fn(*args, **kwargs)}</{tag}>"
+        return wrapper
+    return decorator
+
+@format_tag("b")
+def hello1(name="World"):
+    return f"Hello {name}!"
+
+@format_tag("i")
+def hello2(name="World"):
+    return f"Hello {name}!"
+
+
+# -
+
+hello1("Felix"), hello2("Phoenix")
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Generators
+#
+# - functions with lazy evaluation
+# - `yield` -> `return`
+
+
+# + {"slideshow": {"slide_type": "fragment"}}
+def myrange(start, end, step=1):
+    """My range implementation"""
+    res = start
+    while res < end:
+        yield res
+        res += step
+
+
+# -
+
+[i for i in myrange(0, 10, 3)]
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Iterators & generator expressions
+#
+# - represents a stream of data, but returns one element at a time
+# - can be used in a `for`-loop like a container
+# - more efficient
+# -
+lst_iter = iter([1, 2, 3])
+a = next(lst_iter)  # get next element
+b, c = lst_iter     # unpack all elements
+a, b, c
+
+
+# + {"slideshow": {"slide_type": "fragment"}}
+import sys
+
+lst = [i/2 for i in range(1_000_000)]
+lst_itr = (i/2 for i in range(1_000_000))
+sys.getsizeof(lst), sys.getsizeof(lst_itr)  # size in bytes
+
+# + {"slideshow": {"slide_type": "fragment"}}
+sys.getsizeof(lst), sys.getsizeof(list(lst_itr))  # size in bytes
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ### Other built-ins to create iterators
+#
+# - `zip` "ties" two iterables
+# - `enumerate` with index
+
+# + {"slideshow": {"slide_type": "subslide"}}
+vowels = ("a", "e", "i", "o", "u")
+for vowel, num in zip(range(len(vowels)), vowels):
+    print(vowel, num)
+
+# + {"slideshow": {"slide_type": "subslide"}}
+for index, vowel in enumerate(vowels):
+    print(index, vowel)
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Using `lambda` functions with `map`, `all`, `any`
+#
+# *Note:* `map` returns an iterator
+#
+# - split the strings to a pair of numbers: `["1,2", ..]` -> `[[1, 2], ..]`
+#   - flatten the result
+# -
+
+pairs = ["1,2", "3,4", "5,6"]
+
+# + {"slideshow": {"slide_type": "fragment"}}
+res = list(map(lambda i: list(map(int, i.split(","))), pairs))
+res
+
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# *Hints:*
+# - `map` and `list.extend` or nested for loop
+# - `itertools.chain` or `itertools.chain.from_iterable` (returns an iterator)
+# - `functools.reduce`
+# -
+
+
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# *Solutions*
+# -
+
+flat = []
+_ = list(map(flat.extend, res))
+flat
+
+# + {"slideshow": {"slide_type": "fragment"}}
+import itertools
+
+list(itertools.chain.from_iterable(res))
+
+# + {"slideshow": {"slide_type": "fragment"}}
+from functools import reduce
+
+reduce(lambda i, j: i + j, res)
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# *Advanced variation of reduce*
+
+# +
+from itertools import accumulate
+from operator import add
+
+list(accumulate(res, add))
+
+# +
+# play around here
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# - in a random sequence of characters, find
+#   - if any of them are vowels,
+#   - if all of them are vowels,
+#   - count vowels
+
+# + {"slideshow": {"slide_type": "subslide"}}
+from random import choices
+from string import ascii_lowercase
+
+vowels = ("a", "e", "i", "o", "u")
+population = choices(ascii_lowercase, k=10)  # `k` random characters
+
+# + {"slideshow": {"slide_type": "fragment"}}
+is_vowel = [c in vowels for c in population]
+population, is_vowel
+# -
+
+any(is_vowel), all(is_vowel), sum(is_vowel)
+
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# ## Playground
+#
+# - Play around, try different things
+# - apart from the standard library, you can also try `numpy` and `pandas`
+# -
 
 
