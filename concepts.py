@@ -1048,8 +1048,8 @@ pairs = ["1,2", "3,4", "5,6"]
 res = list(map(lambda i: list(map(int, i.split(","))), pairs))
 res
 
-# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
-# *Hints:*
+# + {"slideshow": {"slide_type": "subslide"}, "cell_type": "markdown"}
+# *Hints for flattening:*
 # - `map` and `list.extend` or nested for loop
 # - `itertools.chain` or `itertools.chain.from_iterable` (returns an iterator)
 # - `functools.reduce`
