@@ -6,22 +6,38 @@
 Learning to program, with Python
 ================================
 
-This repo holds the content I wrote for a 3 hr workshop to teach a
-group of graduate students, consisting mostly of biologists, with very
-little exposure to programming, to code.  They needed programming to
-analyse datasets that vary from DNA sequences, typical statistical
+This repo holds the content I wrote for a mini workshop to teach a
+group of graduate students, consisting mostly of biologists with very
+little exposure to programming, how to code.  They needed programming
+to analyse datasets that vary from DNA sequences, typical statistical
 data, and some basic language processing.  The initial feedback from
 the students was: "We don't know where to begin".  So, in this
 tutorial my goal was to make them comfortable with basic programming
-idioms, and a very short primer on how to use libraries (both from the
-standard library, and external) to do more complex tasks.
+idioms, and a very short primer on how to use libraries (mostly the
+standard library) to do more complex tasks.
+
+To go through the content, just click on the "launch binder" button,
+which should take you to mybinder.org.  Initially you might need to
+wait a while for the image to be created.  Once done, and a jupyter
+server is running, you may click on the notebook `concepts.ipynb` and
+explore away.
 
 Slides, Setup, & Datasets
 -------------------------
 
-While writing the tutorial, I versioned the notebook by syncing it with a python file using `jupytext <https://jupytext.readthedocs.io/en/latest/>`_.  You may use the ``Makefile`` to generate the notebook from the python file (or vice versa).  If you work on the notebook directly, you could sync it with the python file using the jupyter integration provided by ``jupytext``.  I have used the ``light`` syntax.  I use `RISE <https://rise.readthedocs.io/>`_ to present the notebook as interactive slides during the tutorial.
+While writing the tutorial, I versioned the notebook by syncing it
+with a python file using `jupytext
+<https://jupytext.readthedocs.io/en/latest/>`_.  You may use the
+``Makefile`` to generate the notebook from the python file (or vice
+versa).  If you work on the notebook directly, you could sync it with
+the python file using the jupyter integration provided by
+``jupytext``.  I have used the ``light`` syntax.  I use `RISE
+<https://rise.readthedocs.io/>`_ to present the notebook as
+interactive slides during the tutorial.
 
-*Note:* possibly due to a bug in the Jupyter integration of ``jupytext``, I could not sync my configurations for RISE to the python file.  Since this was one line, I simply fixed this manually.
+*Note:* possibly due to a bug in the Jupyter integration of
+ ``jupytext``, I could not sync my configurations for RISE to the
+ python file.  Since this was one line, I simply fixed this manually.
 
 I have a small helper library under ``tutorial``.  So that imports
 work without fiddling with ``sys.path``, it is advised to do the
@@ -40,7 +56,10 @@ I have also included a few small datasets under ``data``.  They are:
 Dependencies
 ------------
 
-The lesson and exercises uses the standard library, except for the part where I discuss data analysis libraries like ``numpy``, ``pandas``.  To present the notebook, `RISE`_ is required.  To sync/generate the notebook `jupytext`_ is required.
+The lesson and exercises uses the standard library, except for the
+part where I discuss data analysis libraries like ``numpy``,
+``pandas``.  To present the notebook, `RISE`_ is required.  To
+sync/generate the notebook `jupytext`_ is required.
 
 Hope this is useful to people out there 😇.
 
