@@ -19,7 +19,7 @@ def read_file(path):
     path = Path(path)
     filehandler = BZ2File if path.suffix == ".bz2" else open
     with filehandler(path) as txtfile:
-        yield from txtfile.readlines()
+        yield from txtfile
 
 
 def fasta_seqs(lines):
@@ -27,7 +27,7 @@ def fasta_seqs(lines):
 
     Parameters
     ----------
-    lines: iterable
+    lines: Iterable[str]
         Iterable that returns text in fasta format one line at a time.  This
         can also be a generator or other iterators that read a fasta file or
         stream lazily.
