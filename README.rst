@@ -35,7 +35,7 @@ the python file using the jupyter integration provided by
 <https://rise.readthedocs.io/>`_ to present the notebook as
 interactive slides during the tutorial.
 
-*Note:* possibly due to a bug in the Jupyter integration of
+ *Note:* possibly due to a bug in the Jupyter integration of
  ``jupytext``, I could not sync my configurations for RISE to the
  python file.  Since this was one line, I simply fixed this manually.
 
